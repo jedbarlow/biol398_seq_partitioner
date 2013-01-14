@@ -18,11 +18,11 @@
  * 
  */
 
-package ca.biol398.seqpartitioner;
+package ca.biol398.seqpartitionerplugin;
 
 import com.biomatters.geneious.publicapi.plugin.GeneiousPlugin;
 
-public class SeqPartitioner extends GeneiousPlugin {
+public class SeqPartitionerPlugin extends GeneiousPlugin {
     @Override
     public String getName() {
         return "Sequence Partitioner Plugin";

@@ -2,6 +2,6 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-    <classpathentry combineaccessrules="false" kind="src" path="../../../opt/geneious-6.0.5-devkit/examples/GeneiousFiles"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/GeneiousFiles"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

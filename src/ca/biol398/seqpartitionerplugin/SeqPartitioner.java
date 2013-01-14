@@ -17,13 +17,13 @@
  * along with SeqPartitioner.  If not, see <http://www.gnu.org/licenses/>.
  * 
  */
-package ca.biol398.seqpartitioner;
+package ca.biol398.seqpartitionerplugin;
 
-import com.biomatters.geneious.publicapi.plugin.DocumentOperation;
-import com.biomatters.geneious.publicapi.plugin.DocumentOperationException;
-import com.biomatters.geneious.publicapi.plugin.DocumentSelectionSignature; 
-import com.biomatters.geneious.publicapi.plugin.GeneiousActionOptions;
-import com.biomatters.geneious.publicapi.plugin.Options;
+import java.util.ArrayList;
+import java.util.List;
+import jebl.util.ProgressListener;
+import com.biomatters.geneious.publicapi.documents.AnnotatedPluginDocument;
+import com.biomatters.geneious.publicapi.plugin.*;
 
 public class SeqPartitioner extends DocumentOperation {
     boolean DEBUG = true;
