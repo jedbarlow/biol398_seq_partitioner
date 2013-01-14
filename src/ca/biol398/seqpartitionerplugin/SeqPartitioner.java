@@ -19,6 +19,49 @@
  */
 package ca.biol398.seqpartitioner;
 
-// TODO: figure out what class to inherit from
-public class SeqPartitioner {
+import com.biomatters.geneious.publicapi.plugin.DocumentOperation;
+import com.biomatters.geneious.publicapi.plugin.DocumentOperationException;
+import com.biomatters.geneious.publicapi.plugin.DocumentSelectionSignature; 
+import com.biomatters.geneious.publicapi.plugin.GeneiousActionOptions;
+import com.biomatters.geneious.publicapi.plugin.Options;
+
+public class SeqPartitioner extends DocumentOperation {
+    boolean DEBUG = true;
+    
+    @Override
+    public GeneiousActionOptions getActionOptions() {
+        return new GeneiousActionOptions(
+                                         "Partition Allele Multiset...",
+                                         "Create a partition table of alleles.")
+            .setMainMenuLocation(GeneiousActionOptions.MainMenu.Tools);
+    }
+    
+    @Override
+    public String getHelp() {
+        return "Select alignment files.";
+    }
+    
+    @Override
+    public DocumentSelectionSignature[] getSelectionSignatures() {
+        return new DocumentSelectionSignature[] {
+            DocumentSelectionSignature.forNucleotideAlignments(
+                                                               1,
+                                                               Integer.MAX_VALUE)
+        };
+    }
+
+    @Override
+    public Options getOptions(AnnotatedPluginDocument... documents)
+	throws DocumentOperationException {
+        return new SeqPartitionerOptions();
+    }
+    
+    @Override
+    public List<AnnotatedPluginDocument> performOperation(
+                                                          AnnotatedPluginDocument[] documents,
+                                                          ProgressListener progressListener,
+                                                          Options options)
+        throws DocumentOperationException {
+        return new ArrayList<AnnotatedPluginDocument>();
+    }
 }
