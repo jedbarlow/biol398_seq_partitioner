@@ -23,11 +23,10 @@ import com.biomatters.geneious.publicapi.documents.sequence.SequenceAlignmentDoc
 
 public class SeqAnalysis {
 	private static char EmptyPlaceChar = '-';
-    SequenceAlignmentDocument seqal = (SequenceAlignmentDocument) documents[i].getDocument();
     
     /*
      * Attempt to partition a multiset (array) of strings.  Transitivity of the
-     * equivalence relation may fail over some particular sequences.  For
+     * equivalence relation may fail over some particular sequence sets.  For
      * example, the following will cause an error,
      *   1.  ATC
      *   2.  A-C
@@ -74,10 +73,15 @@ public class SeqAnalysis {
     	return ec;
     }
 
+    /*
+     * Equivalence up to a special character.
+     */
     public static boolean CompareSequences(String sa1, String sa2) {
     	int min;
     	String maxstr;
-    	
+
+        min = Math.min(sa1.length(), sa2.length());
+
     	/* Test for match up to a special char. */
     	for(int i = 0; i < min; i++) {
     		if(sa1.charAt(i) == sa2.charAt(i)) continue;
@@ -89,7 +93,7 @@ public class SeqAnalysis {
     	/* 
     	 * sa1 and sa2 should always be the same length, but if they're not
     	 * then they can only match if the non-overlapping tail of the longer
-    	 * string consists solely of dashes.
+    	 * string consists solely of the special character.
     	 */
     	if (sa1.length() != sa2.length()) {
     		if (sa1.length() > sa2.length())
@@ -98,7 +102,7 @@ public class SeqAnalysis {
     			maxstr = sa2;
     		
     		for(int i = min; i < maxstr.length(); i++) {
-    			if (sa1.charAt(i) != '-')
+    			if (sa1.charAt(i) != EmptyPlaceChar)
     				return false;
     		}
     	}
