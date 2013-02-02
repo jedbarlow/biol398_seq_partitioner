@@ -15,7 +15,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with SeqPartitioner.  If not, see <http://www.gnu.org/licenses/>.
- * 
+ *
  */
 package ca.biol398.seqpartitionerplugin;
 
@@ -29,7 +29,7 @@ import com.biomatters.geneious.publicapi.plugin.*;
 
 public class SeqPartitioner extends DocumentOperation {
     boolean DEBUG = true;
-    
+
     @Override
     public GeneiousActionOptions getActionOptions() {
         return new GeneiousActionOptions(
@@ -37,12 +37,12 @@ public class SeqPartitioner extends DocumentOperation {
                                          "Create a partition table of alleles.")
             .setMainMenuLocation(GeneiousActionOptions.MainMenu.Tools);
     }
-    
+
     @Override
     public String getHelp() {
         return "Select alignment files.";
     }
-    
+
     @Override
     public DocumentSelectionSignature[] getSelectionSignatures() {
         return new DocumentSelectionSignature[] {
@@ -54,26 +54,25 @@ public class SeqPartitioner extends DocumentOperation {
 
     @Override
     public Options getOptions(AnnotatedPluginDocument... documents)
-	throws DocumentOperationException {
+            throws DocumentOperationException {
         return new SeqPartitionerOptions();
     }
-    
+
     @Override
     public List<AnnotatedPluginDocument> performOperation(
-                                                          AnnotatedPluginDocument[] documents,
-                                                          ProgressListener progressListener,
-                                                          Options options)
-        throws DocumentOperationException {
+            AnnotatedPluginDocument[] documents,
+            ProgressListener progressListener, Options options)
+            throws DocumentOperationException {
         SeqPartitionerOptions opts;
         List<SequenceDocument> sd;
         SequenceAlignmentDocument seqal;
 
         opts = (SeqPartitionerOptions) options;
 
-        for(int d = 0; d < documents.length; d++) {
-             seqal = (SequenceAlignmentDocument) documents[d].getDocument();
+        for (int d = 0; d < documents.length; d++) {
+            seqal = (SequenceAlignmentDocument) documents[d].getDocument();
 
-             sd = seqal.getSequences();
+            sd = seqal.getSequences();
         }
 
         return new ArrayList<AnnotatedPluginDocument>();

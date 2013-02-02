@@ -15,7 +15,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with SeqPartitioner.  If not, see <http://www.gnu.org/licenses/>.
- * 
+ *
  */
 package ca.biol398.seqpartitionerplugin;
 
@@ -27,67 +27,67 @@ import com.biomatters.geneious.publicapi.documents.sequence.SequenceAlignmentDoc
 import com.biomatters.geneious.publicapi.documents.sequence.SequenceDocument;
 
 public class TableConstructor {
-	/* Used for construction of the table. */
-	private HashMap<String, HashMap<String, Integer>> htable;
-	
-	/* These get rendered to. */
+    /* Used for construction of the table. */
+    private HashMap<String, HashMap<String, Integer>> htable;
+
+    /* These get rendered to. */
     private List<String> genes;
     private List<String> strains;
     private List<List<Integer>> data;
 
     public TableConstructor() {
-    	htable = new HashMap<String, HashMap<String, Integer>>();
-    	
-    	genes = null;
-    	strains = null;
-    	data = null;
+        htable = new HashMap<String, HashMap<String, Integer>>();
+
+        genes = null;
+        strains = null;
+        data = null;
     }
 
     public void AddDocument (SequenceAlignmentDocument sa) {
-    	List<SequenceDocument> seqDocs;
-    	String[]               strains;
-    	String[]               seqs;
-    	int[]                  groups;
-    	
-    	seqDocs = sa.getSequences();
-    	strains = new String[seqDocs.size()];
-    	seqs    = new String[seqDocs.size()];
-    	groups  = new    int[seqDocs.size()];
-    	
-    	for(int i = 0; i < seqDocs.size(); i++) {
-    		strains[i] = seqDocs.get(i).getName();
-    		seqs[i] = seqDocs.get(i).getSequenceString();
-    	}
-    	
-    	AddColumn(
-    			sa.getName(),
-    			strains,
-    			SeqAnalysis.PartitionSequences(seqs));
+        List<SequenceDocument> seqDocs;
+        String[]               strains;
+        String[]               seqs;
+        int[]                  groups;
+
+        seqDocs = sa.getSequences();
+        strains = new String[seqDocs.size()];
+        seqs    = new String[seqDocs.size()];
+        groups  = new    int[seqDocs.size()];
+
+        for(int i = 0; i < seqDocs.size(); i++) {
+            strains[i] = seqDocs.get(i).getName();
+            seqs[i] = seqDocs.get(i).getSequenceString();
+        }
+
+        AddColumn(
+                sa.getName(),
+                strains,
+                SeqAnalysis.PartitionSequences(seqs));
     }
-    
+
     /*
      * Add allele partition data to the table.
      */
     private void AddColumn (String gene, String[] strains, int[] groups) {
-    	HashMap<String, Integer> row;
-    	
+        HashMap<String, Integer> row;
+
         for(int i = 0; i < data.size() && i < groups.length; i++) {
-        	row = htable.get(strains[i]);
+            row = htable.get(strains[i]);
 
-        	if (row == null) {
-        		row = new HashMap<String, Integer>();
-        		htable.put(strains[i], row);
-        	}
+            if (row == null) {
+                row = new HashMap<String, Integer>();
+                htable.put(strains[i], row);
+            }
 
-    		row.put(gene, groups[i]);
+            row.put(gene, groups[i]);
         }
     }
 
     private boolean CompareRows(List<Integer> r1, List<Integer> r2) {
-    	return r1 == r2;
+        return r1 == r2;
     }
     public String[][] RenderTable() {
-    	/* Method stub */
-    	return null;
+        /* Method stub */
+        return null;
     }
 }
