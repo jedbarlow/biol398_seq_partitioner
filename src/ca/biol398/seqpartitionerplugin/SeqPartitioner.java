@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 import jebl.util.ProgressListener;
 import com.biomatters.geneious.publicapi.documents.AnnotatedPluginDocument;
+import com.biomatters.geneious.publicapi.documents.sequence.SequenceAlignmentDocument;
+import com.biomatters.geneious.publicapi.documents.sequence.SequenceDocument;
 import com.biomatters.geneious.publicapi.plugin.*;
 
 public class SeqPartitioner extends DocumentOperation {
@@ -62,6 +64,18 @@ public class SeqPartitioner extends DocumentOperation {
                                                           ProgressListener progressListener,
                                                           Options options)
         throws DocumentOperationException {
+        SeqPartitionerOptions opts;
+        List<SequenceDocument> sd;
+        SequenceAlignmentDocument seqal;
+
+        opts = (SeqPartitionerOptions) options;
+
+        for(int d = 0; d < documents.length; d++) {
+             seqal = (SequenceAlignmentDocument) documents[d].getDocument();
+
+             sd = seqal.getSequences();
+        }
+
         return new ArrayList<AnnotatedPluginDocument>();
     }
 }
