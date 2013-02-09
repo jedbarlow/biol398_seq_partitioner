@@ -27,20 +27,20 @@ import com.biomatters.geneious.publicapi.documents.sequence.SequenceAlignmentDoc
 import com.biomatters.geneious.publicapi.documents.sequence.SequenceDocument;
 
 public class TableConstructor {
-    /* Used for construction of the table. */
-    private HashMap<String, HashMap<String, Integer>> htable;
-
-    /* These get rendered to. */
     private List<String> genes;
     private List<String> strains;
     private List<List<Integer>> data;
 
-    public TableConstructor() {
-        htable = new HashMap<String, HashMap<String, Integer>>();
+    private static int absentDataIndicator = -1;
 
-        genes = null;
-        strains = null;
-        data = null;
+    private int expectedNumGenes;
+
+    public TableConstructor(int expectedNumGenes, int expectedNumStrains) {
+        genes = new ArrayList<String>(expectedNumGenes);
+        strains = new ArrayList<String>(expectedNumStrains);
+        data = new ArrayList<List<Integer>>(expectedNumStrains);
+
+        this.expectedNumGenes = expectedNumGenes;
     }
 
     public void AddDocument (SequenceAlignmentDocument sa) {
@@ -69,18 +69,53 @@ public class TableConstructor {
      * Add allele partition data to the table.
      */
     private void AddColumn (String gene, String[] strains, int[] groups) {
-        HashMap<String, Integer> row;
+        List<Integer> row;
 
-        for(int i = 0; i < data.size() && i < groups.length; i++) {
-            row = htable.get(strains[i]);
+        addBlankColumn(gene);
 
-            if (row == null) {
-                row = new HashMap<String, Integer>();
-                htable.put(strains[i], row);
-            }
-
-            row.put(gene, groups[i]);
+        for(int i = 0; i < strains.length; i++) {
+            row = getRow(strains[i]);
+            row.set(row.size()-1, groups[i]);
         }
+    }
+
+    /*
+     * Create a new column in the table under the given heading, and
+     * populate the entries with absentDataIndicator.
+     */
+    private void addBlankColumn(String gene) {
+        /*
+         * TODO: detect error of duplicate column title (gene)
+         */
+
+        genes.add(gene);
+        for(int i = 0; i < strains.size(); i++) {
+            data.get(i).add(absentDataIndicator);
+        }
+    }
+
+    /*
+     * Get the list of integers associated with a strain name.
+     * Create a new such row if none exists for the strain.
+     */
+    private List<Integer> getRow(String strain) {
+        List<Integer> row;
+
+        for(int i = 0; i < strains.size(); i++) {
+            if(strains.get(i) == strain)
+                return data.get(i);
+        }
+
+        /* No row exists for the strain, create a new row. */
+
+        row = new ArrayList<Integer>(
+                Math.max(expectedNumGenes, genes.size()));
+
+        for(int i = 0; i < row.size(); i++) {
+            row.set(i, absentDataIndicator);
+        }
+
+        return row;
     }
 
     private boolean CompareRows(List<Integer> r1, List<Integer> r2) {
