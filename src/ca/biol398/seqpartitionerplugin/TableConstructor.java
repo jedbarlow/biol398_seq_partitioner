@@ -20,7 +20,6 @@
 package ca.biol398.seqpartitionerplugin;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import com.biomatters.geneious.publicapi.documents.sequence.SequenceAlignmentDocument;
@@ -43,23 +42,21 @@ public class TableConstructor {
         this.expectedNumGenes = expectedNumGenes;
     }
 
-    public void AddDocument (SequenceAlignmentDocument sa) {
+    public void addDocument (SequenceAlignmentDocument sa) {
         List<SequenceDocument> seqDocs;
         String[]               strains;
         String[]               seqs;
-        int[]                  groups;
 
         seqDocs = sa.getSequences();
         strains = new String[seqDocs.size()];
         seqs    = new String[seqDocs.size()];
-        groups  = new    int[seqDocs.size()];
 
         for(int i = 0; i < seqDocs.size(); i++) {
             strains[i] = seqDocs.get(i).getName();
             seqs[i] = seqDocs.get(i).getSequenceString();
         }
 
-        AddColumn(
+        addColumn(
                 sa.getName(),
                 strains,
                 SeqAnalysis.PartitionSequences(seqs));
@@ -68,7 +65,7 @@ public class TableConstructor {
     /*
      * Add allele partition data to the table.
      */
-    private void AddColumn (String gene, String[] strains, int[] groups) {
+    private void addColumn (String gene, String[] strains, int[] groups) {
         List<Integer> row;
 
         addBlankColumn(gene);
@@ -118,11 +115,50 @@ public class TableConstructor {
         return row;
     }
 
-    private boolean CompareRows(List<Integer> r1, List<Integer> r2) {
+    private boolean compareRows(List<Integer> r1, List<Integer> r2) {
         return r1 == r2;
     }
+
+    /*
+     * Partition the rows by assigning each a group number.
+     * For example, the data set
+     *   1, 1, 1
+     *   1, 2, 1
+     *   1, 2, 1
+     *   1, 2, 2
+     * yields the following column
+     *   1
+     *   2
+     *   2
+     *   3
+     */
+    private int[] createRowGroups() {
+        int counter;
+        int[] groups = new int[strains.size()];
+
+        for(int i = 0; i < groups.length; i++)
+            groups[i] = 0;
+
+        counter = 1;
+        for(int i = 0; i < groups.length; i++) {
+            if(groups[i] != 0) continue;
+            groups[i] = counter;
+            counter++;
+
+            for(int j = i + 1; j < groups.length; j++) {
+                if(groups[j] != 0) continue;
+
+                if(compareRows(data.get(i), data.get(j)))
+                    groups[j] = groups[i];
+            }
+        }
+
+        return groups;
+    }
     public String[][] RenderTable() {
-        /* Method stub */
+        /*
+         * Create the row type column.
+         */
         return null;
     }
 }
