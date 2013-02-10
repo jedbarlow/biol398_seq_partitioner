@@ -115,8 +115,14 @@ public class TableConstructor {
         return row;
     }
 
-    private boolean compareRows(List<Integer> r1, List<Integer> r2) {
-        return r1 == r2;
+    private int compareRows(List<Integer> r1, List<Integer> r2) {
+        int result = 0;
+        for(int i = 0; i < r1.size(); i++) {
+            if(r1.get(i) != r2.get(i))
+                result++;
+        }
+
+        return result;
     }
 
     /*
@@ -148,17 +154,79 @@ public class TableConstructor {
             for(int j = i + 1; j < groups.length; j++) {
                 if(groups[j] != 0) continue;
 
-                if(compareRows(data.get(i), data.get(j)))
+                if(compareRows(data.get(i), data.get(j)) == 0)
                     groups[j] = groups[i];
             }
         }
 
         return groups;
     }
-    public String[][] RenderTable() {
+
+    /*
+     * Produces a table of results with gene names in the top row,
+     * strain names in the left column, and data filling in the
+     * middle.
+     */
+    public String[][] RenderGeneVStrainTable() {
+        String[][] result;
+        List<Integer> row;
+        int[] rowGroupColumn;
+
         /*
-         * Create the row type column.
+         * Need room for the data, the top row of gene names, the
+         * left column of strain names, and the final column of row
+         * groupings.
          */
-        return null;
+        result = new String[genes.size() + 2][strains.size() + 1];
+
+        result[0][0] = "";
+        for(int i = 0; i < genes.size(); i++) {
+            result[i + 1][0] = genes.get(i);
+            result[0][i + 1] = strains.get(i);
+        }
+
+        for(int j = 0; j < genes.size(); j++) {
+            row = data.get(j);
+
+            for(int i = 0; i < strains.size(); i++) {
+                result[i + 1][j + 1] = row.get(i).toString();
+            }
+        }
+
+        rowGroupColumn = createRowGroups();
+
+        result[genes.size() + 1][0] = "Combined Type";
+        for(int j = 0; j < strains.size(); j++) {
+            result[genes.size() + 1][j + 1] = Integer.toString(rowGroupColumn[j]);
+        }
+
+        return result;
+    }
+
+    public String[][] RenderStrainVStrainTable() {
+        String[][] result;
+        List<Integer> row;
+
+        /*
+         * Need room for the data, the top row of gene names, the
+         * left column of strain names.
+         */
+        result = new String[genes.size() + 1][strains.size() + 1];
+
+        result[0][0] = "";
+        for(int i = 0; i < genes.size(); i++) {
+            result[i + 1][0] = genes.get(i);
+            result[0][i + 1] = strains.get(i);
+        }
+
+        for(int j = 0; j < genes.size(); j++) {
+            row = data.get(j);
+
+            for(int i = 0; i < strains.size(); i++) {
+                result[i + 1][j + 1] = Integer.toString(compareRows(row, data.get(i)));
+            }
+        }
+
+        return result;
     }
 }
