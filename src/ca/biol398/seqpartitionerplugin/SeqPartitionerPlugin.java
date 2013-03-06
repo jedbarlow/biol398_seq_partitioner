@@ -20,9 +20,17 @@
 
 package ca.biol398.seqpartitionerplugin;
 
+import com.biomatters.geneious.publicapi.plugin.DocumentOperation;
 import com.biomatters.geneious.publicapi.plugin.GeneiousPlugin;
 
 public class SeqPartitionerPlugin extends GeneiousPlugin {
+    @Override
+    public DocumentOperation[] getDocumentOperations() {
+        return new DocumentOperation[] {
+                new SeqPartitioner()
+        };
+    }
+
     @Override
     public String getName() {
         return "Sequence Partitioner Plugin";

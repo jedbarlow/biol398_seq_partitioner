@@ -26,6 +26,13 @@ import com.biomatters.geneious.publicapi.plugin.*;
 //import java.util.*;
 
 public class SeqPartitionerOptions extends Options {
+    private FileSelectionOption output_dir;
+
+    public String getOutputDir() {
+        return output_dir.getValue();
+    }
+
     public SeqPartitionerOptions() {
+        output_dir = this.addFileSelectionOption("output_dir", "CSV output directory", "");
     }
 }
