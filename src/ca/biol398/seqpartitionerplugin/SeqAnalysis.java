@@ -58,7 +58,9 @@ public class SeqAnalysis {
             }
 
             for (int j = 0; j < ms.length; j++) {
-                if(ec[i] == ec[j]) continue;
+                if(ec[i] == ec[j] || !CompareSequences(ms[i], ms[j]))
+                    continue;
+
                 if(ec[j] == 0)
                     ec[j] = ec[i];
                 else
@@ -102,7 +104,7 @@ public class SeqAnalysis {
                 maxstr = sa2;
 
             for(int i = min; i < maxstr.length(); i++) {
-                if (sa1.charAt(i) != EmptyPlaceChar)
+                if (maxstr.charAt(i) != EmptyPlaceChar)
                     return false;
             }
         }

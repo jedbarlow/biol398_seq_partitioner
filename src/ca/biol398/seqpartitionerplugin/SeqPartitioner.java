@@ -19,6 +19,9 @@
  */
 package ca.biol398.seqpartitionerplugin;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import jebl.util.ProgressListener;
@@ -70,10 +73,51 @@ public class SeqPartitioner extends DocumentOperation {
 
         opts = (SeqPartitionerOptions) options;
 
+        TableConstructor tc = new TableConstructor(
+                ((SequenceAlignmentDocument)documents[0].getDocument()).getSequences().size(),
+                documents.length);
+
         for (int d = 0; d < documents.length; d++) {
             seqal = (SequenceAlignmentDocument) documents[d].getDocument();
 
-            sd = seqal.getSequences();
+            tc.addDocument(seqal);
+            //sd = seqal.getSequences();
+        }
+
+        try {
+            String[][] table;
+            FileWriter f = new FileWriter(
+                    opts.getOutputDir() + File.separator + opts.getBaseName() + "_gene_vs_strain.csv");
+
+            table = tc.RenderGeneVStrainTable();
+
+            for (int j = 0; j < table[0].length; j++) {
+                for (int i = 0; i < table.length; i++) {
+                    if (i != 0)
+                        f.write(",");
+                    if (table[i][j] != null) f.write(table[i][j]);
+                }
+                f.write("\n");
+            }
+            f.close();
+
+            f = new FileWriter(
+                    opts.getOutputDir() + File.separator + opts.getBaseName() + "_strain_vs_strain.csv");
+
+            table = tc.RenderStrainVStrainTable();
+
+            for (int j = 0; j < table[0].length; j++) {
+                for (int i = 0; i < table.length; i++) {
+                    if (i != 0)
+                        f.write(",");
+                    if (table[i][j] != null) f.write(table[i][j]);
+                }
+                f.write("\n");
+            }
+            f.close();
+        } catch (IOException e) {
+            // TODO: Show popup dialog box or something.
+            e.printStackTrace();
         }
 
         return new ArrayList<AnnotatedPluginDocument>();

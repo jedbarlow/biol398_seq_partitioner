@@ -21,6 +21,8 @@ package ca.biol398.seqpartitionerplugin;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.biomatters.geneious.publicapi.documents.sequence.SequenceAlignmentDocument;
 import com.biomatters.geneious.publicapi.documents.sequence.SequenceDocument;
@@ -43,16 +45,30 @@ public class TableConstructor {
     }
 
     public void addDocument (SequenceAlignmentDocument sa) {
+        Matcher matcher;
+        Pattern pattern;
         List<SequenceDocument> seqDocs;
-        String[]               strains;
-        String[]               seqs;
+        String[] strains;
+        String[] seqs;
+
 
         seqDocs = sa.getSequences();
         strains = new String[seqDocs.size()];
         seqs    = new String[seqDocs.size()];
 
+        /*
+         * Often allele names are formed as STRAIN_GENE but we just want
+         * a unique identifier that will be consistent across fasta files.
+         */
+        pattern = Pattern.compile("(.*)_");
+
         for(int i = 0; i < seqDocs.size(); i++) {
-            strains[i] = seqDocs.get(i).getName();
+            matcher = pattern.matcher(seqDocs.get(i).getName());
+            if(matcher.lookingAt())
+                strains[i] = matcher.group(1);
+            else
+                strains[i] = seqDocs.get(i).getName();
+
             seqs[i] = seqDocs.get(i).getSequenceString();
         }
 
@@ -99,7 +115,7 @@ public class TableConstructor {
         List<Integer> row;
 
         for(int i = 0; i < strains.size(); i++) {
-            if(strains.get(i) == strain)
+            if(strains.get(i).compareTo(strain) == 0)
                 return data.get(i);
         }
 
@@ -108,9 +124,12 @@ public class TableConstructor {
         row = new ArrayList<Integer>(
                 Math.max(expectedNumGenes, genes.size()));
 
-        for(int i = 0; i < row.size(); i++) {
-            row.set(i, absentDataIndicator);
+        for(int i = 0; i < genes.size(); i++) {
+            row.add(i, absentDataIndicator);
         }
+
+        strains.add(strain);
+        data.add(row);
 
         return row;
     }
@@ -182,13 +201,15 @@ public class TableConstructor {
         result[0][0] = "";
         for(int i = 0; i < genes.size(); i++) {
             result[i + 1][0] = genes.get(i);
+        }
+        for(int i = 0; i < strains.size(); i++) {
             result[0][i + 1] = strains.get(i);
         }
 
-        for(int j = 0; j < genes.size(); j++) {
+        for(int j = 0; j < strains.size(); j++) {
             row = data.get(j);
 
-            for(int i = 0; i < strains.size(); i++) {
+            for(int i = 0; i < genes.size(); i++) {
                 result[i + 1][j + 1] = row.get(i).toString();
             }
         }
@@ -208,18 +229,18 @@ public class TableConstructor {
         List<Integer> row;
 
         /*
-         * Need room for the data, the top row of gene names, the
+         * Need room for the data, the top row of strain names, and the
          * left column of strain names.
          */
-        result = new String[genes.size() + 1][strains.size() + 1];
+        result = new String[strains.size() + 1][strains.size() + 1];
 
         result[0][0] = "";
-        for(int i = 0; i < genes.size(); i++) {
-            result[i + 1][0] = genes.get(i);
+        for(int i = 0; i < strains.size(); i++) {
+            result[i + 1][0] = strains.get(i);
             result[0][i + 1] = strains.get(i);
         }
 
-        for(int j = 0; j < genes.size(); j++) {
+        for(int j = 0; j < strains.size(); j++) {
             row = data.get(j);
 
             for(int i = 0; i < strains.size(); i++) {
