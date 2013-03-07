@@ -49,9 +49,9 @@ public class SeqPartitionerPlugin extends GeneiousPlugin {
         return "0.1";
     }
     public String getMinimumApiVersion() {
-        return "";  // TODO: figure out what to put here
+        return "4.11";  // TODO: figure out what to put here
     }
     public int getMaximumApiVersion() {
-        return 6;  // TODO: figure out what to put here
+        return 4;  // TODO: figure out what to put here
     }
 }
