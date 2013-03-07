@@ -8,7 +8,7 @@
     <property name="src" location="src"/>
 
     <path id="classpath">
-        <fileset dir="../GeneiousFiles/lib">
+        <fileset dir="../../../opt/geneious-6.0.5-devkit/examples/GeneiousFiles/lib">
             <include name="GeneiousPublicAPI.jar"/>
             <include name="jdom.jar"/>
             <include name="jebl.jar"/>
