@@ -44,9 +44,8 @@ public class TableConstructor {
         this.expectedNumGenes = expectedNumGenes;
     }
 
-    public void addDocument (SequenceAlignmentDocument sa) {
+    public void addDocument (SequenceAlignmentDocument sa, Pattern pattern, String replacement) {
         Matcher matcher;
-        Pattern pattern;
         List<SequenceDocument> seqDocs;
         String[] strains;
         String[] seqs;
@@ -56,16 +55,10 @@ public class TableConstructor {
         strains = new String[seqDocs.size()];
         seqs    = new String[seqDocs.size()];
 
-        /*
-         * Often allele names are formed as STRAIN_GENE but we just want
-         * a unique identifier that will be consistent across fasta files.
-         */
-        pattern = Pattern.compile("(.*)_");
-
         for(int i = 0; i < seqDocs.size(); i++) {
             matcher = pattern.matcher(seqDocs.get(i).getName());
             if(matcher.lookingAt())
-                strains[i] = matcher.group(1);
+                strains[i] = matcher.replaceAll(replacement);
             else
                 strains[i] = seqDocs.get(i).getName();
 

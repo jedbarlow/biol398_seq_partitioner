@@ -24,6 +24,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
+
 import jebl.util.ProgressListener;
 import com.biomatters.geneious.publicapi.documents.AnnotatedPluginDocument;
 import com.biomatters.geneious.publicapi.documents.sequence.SequenceAlignmentDocument;
@@ -70,9 +72,11 @@ public class SeqPartitioner extends DocumentOperation {
         SeqPartitionerOptions opts;
         List<SequenceDocument> sd;
         SequenceAlignmentDocument seqal;
+        Pattern pattern;
 
         opts = (SeqPartitionerOptions) options;
-
+        pattern = Pattern.compile(opts.getRegexpMatch());
+        
         TableConstructor tc = new TableConstructor(
                 ((SequenceAlignmentDocument)documents[0].getDocument()).getSequences().size(),
                 documents.length);
@@ -80,8 +84,7 @@ public class SeqPartitioner extends DocumentOperation {
         for (int d = 0; d < documents.length; d++) {
             seqal = (SequenceAlignmentDocument) documents[d].getDocument();
 
-            tc.addDocument(seqal);
-            //sd = seqal.getSequences();
+            tc.addDocument(seqal, pattern, opts.getRegexpReplacement());
         }
 
         try {
