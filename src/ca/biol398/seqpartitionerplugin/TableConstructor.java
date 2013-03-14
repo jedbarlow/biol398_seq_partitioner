@@ -243,4 +243,33 @@ public class TableConstructor {
 
         return result;
     }
+
+    /*
+     * Constructs a side-by-side 3 column version of the
+     * output of the RenderStrainVStrainTable() function.
+     */
+    public static String[][] StrainVStrainToSideBySide(String[][] svstable) {
+        String[][] result;
+        int tablewidth;
+        int numstrains;
+        int row;
+
+
+        tablewidth = svstable.length - 1;
+        numstrains = (tablewidth*tablewidth - tablewidth) / 2;
+        result = new String[3][numstrains];
+
+        row = 0;
+        for(int i = 0; i < tablewidth; i++) {
+            for(int j = i + 1; j < tablewidth; j++) {
+                //if (i == j) continue;
+                result[0][row] = svstable[i + 1][0];
+                result[1][row] = svstable[j + 1][0];
+                result[2][row] = svstable[i + 1][j + 1];
+                row++;
+            }
+        }
+
+        return result;
+    }
 }

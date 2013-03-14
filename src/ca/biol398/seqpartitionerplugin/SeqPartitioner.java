@@ -76,7 +76,7 @@ public class SeqPartitioner extends DocumentOperation {
 
         opts = (SeqPartitionerOptions) options;
         pattern = Pattern.compile(opts.getRegexpMatch());
-        
+
         TableConstructor tc = new TableConstructor(
                 ((SequenceAlignmentDocument)documents[0].getDocument()).getSequences().size(),
                 documents.length);
@@ -105,9 +105,25 @@ public class SeqPartitioner extends DocumentOperation {
             f.close();
 
             f = new FileWriter(
-                    opts.getOutputDir() + File.separator + opts.getBaseName() + "_strain_vs_strain.csv");
+                    opts.getOutputDir() + File.separator + opts.getBaseName() + "_strain_vs_strain_matrix.csv");
 
             table = tc.RenderStrainVStrainTable();
+
+            for (int j = 0; j < table[0].length; j++) {
+                for (int i = 0; i < table.length; i++) {
+                    if (i != 0)
+                        f.write(",");
+                    if (table[i][j] != null) f.write(table[i][j]);
+                }
+                f.write("\n");
+            }
+
+            f.close();
+
+            f = new FileWriter(
+                    opts.getOutputDir() + File.separator + opts.getBaseName() + "_strain_vs_strain.csv");
+
+            table = TableConstructor.StrainVStrainToSideBySide(table);
 
             for (int j = 0; j < table[0].length; j++) {
                 for (int i = 0; i < table.length; i++) {

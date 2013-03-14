@@ -51,7 +51,7 @@ public class SeqPartitionerOptions extends Options {
         output_dir.setSelectionType(JFileChooser.DIRECTORIES_ONLY);
 
         base_name = this.addStringOption("base_name", "CSV base file name", "partition");
-        
+
         this.addLabel("Allele name extraction from sequence names");
         regexp_match   = this.addStringOption("regexp_match",   "Java regular expression to match",    "(.*?)_.*");
         regexp_replace = this.addStringOption("regexp_replace", "Java regular expression replacement", "$1");
