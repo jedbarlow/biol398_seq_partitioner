@@ -58,16 +58,15 @@ public class SeqAnalysis {
             }
 
             for (int j = 0; j < ms.length; j++) {
-                if(ec[i] == ec[j] || !CompareSequences(ms[i], ms[j]))
-                    continue;
+                if(i == j) continue;
 
-                if(ec[j] == 0)
-                    ec[j] = ec[i];
-                else
-                {
-                    ec[j] = -1;
-                    ec[j] = -1;
-                    return ec;
+                if(CompareSequences(ms[i], ms[j]) == (ec[i] != ec[j])) {
+                    if(ec[j] == 0)
+                        ec[j] = ec[i];
+                    else {
+                        ec[i] = -1;
+                        ec[j] = -1;
+                    }
                 }
             }
         }
