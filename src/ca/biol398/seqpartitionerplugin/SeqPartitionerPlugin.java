@@ -46,7 +46,7 @@ public class SeqPartitionerPlugin extends GeneiousPlugin {
         return "Jed Barlow <jbarlow@lavabit.com>";
     }
     public String getVersion() {
-        return "0.3";
+        return "0.4";
     }
     public String getMinimumApiVersion() {
         return "4.11";  // TODO: figure out what to put here
