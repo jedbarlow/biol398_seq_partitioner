@@ -1,0 +1,95 @@
+\documentclass[12pt,letterpaper]{article}
+
+\usepackage{amsmath}
+%\usepackage[margin=1.3in]{geometry}
+\usepackage[pdftex]{graphicx}
+\usepackage{hyperref} 
+
+\parindent 0cm
+
+\graphicspath{{figures/}}
+
+\author{Jed Barlow}
+\title{SeqPartitioner Genious Plugin Manual}
+
+\begin{document}
+\maketitle
+
+\hfill
+
+%\newpage
+\tableofcontents
+
+\newpage
+\section{Overview}
+
+SeqPartitioner is a Genious plugin for partitioning allele multisets.  The
+plugin operates on alignments to produce various tables expressing the
+grouping of equivalent nucleotide sequences and the number of differences
+between strains in terms of unmatched alleles.
+
+\section{Operation}
+The plugin is used by first selecting a set of alignments.
+
+\hfill
+
+\includegraphics[resolution=120]{alignment_selection.png}
+
+\hfill
+
+Then navigating the menu to \texttt{Tools->Partition Allele Multiset}.
+
+
+\hfill
+
+\includegraphics[resolution=130]{menu_entry.png}
+
+\hfill
+
+Then choosing options in the dialog box.
+
+\hfill
+
+\includegraphics[resolution=130]{dialog_box.png}
+
+\hfill
+
+The meanings of the fields are as follows:
+
+\begin{itemize}
+\item \textit{CSV output directory} \hfill \\
+\addcontentsline{toc}{subsection}{CSV output directory}
+    This is the target directory into which the resulting table files will be
+    written.  Note that pre-existing files of the same name as the output files
+    will be overwritten without warning or prompting.
+
+\item \textit{CSV base file name} \hfill \\
+\addcontentsline{toc}{subsection}{CSV base file name}
+    This is a string of text which will be appended with descriptive suffixes
+    for each table.  For example the following entry,
+    
+    \begin{itemize}
+    \item[]\texttt{partition1}
+    \end{itemize}
+
+    will result in the production of files such as these two,
+
+    \begin{itemize}
+    \item[]\texttt{partition1\_gene\_vs\_strain.csv}
+    \item[]\texttt{partition1\_strain\_vs\_strain\_matrix.csv}
+    \end{itemize}
+
+\item \textit{Java regular expression to match} \hfill \\
+\addcontentsline{toc}{subsection}{Java regular expression to match}
+    %TODO
+
+\item \textit{Java regular expression replacement} \hfill \\
+\addcontentsline{toc}{subsection}{Java regular expression replacement}
+    %TODO
+
+\end{itemize}
+
+\section{Example Regular Expressions}
+    %TODO
+
+\end{document}
