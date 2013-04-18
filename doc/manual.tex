@@ -10,7 +10,7 @@
 \graphicspath{{figures/}}
 
 \author{Jed Barlow}
-\title{SeqPartitioner Genious Plugin Manual}
+\title{SeqPartitioner Geneious Plugin Manual}
 
 \begin{document}
 \maketitle
@@ -23,10 +23,10 @@
 \newpage
 \section{Overview}
 
-SeqPartitioner is a Genious plugin for partitioning allele multisets.  The
-plugin operates on alignments to produce various tables expressing the
-grouping of equivalent nucleotide sequences and the number of differences
-between strains in terms of unmatched alleles.
+SeqPartitioner is a Geneious plugin for partitioning allele multisets.  The
+plugin operates on alignments to produce various tables expressing the grouping
+of equivalent nucleotide sequences and the number of differences between
+strains in terms of non-equivalent alleles.
 
 \section{Operation}
 The plugin is used by first selecting a set of alignments.
@@ -58,13 +58,13 @@ The meanings of the fields are as follows:
 
 \begin{itemize}
 \item \textit{CSV output directory} \hfill \\
-\addcontentsline{toc}{subsection}{CSV output directory}
+\addcontentsline{toc}{subsubsection}{CSV output directory}
     This is the target directory into which the resulting table files will be
     written.  Note that pre-existing files of the same name as the output files
     will be overwritten without warning or prompting.
 
 \item \textit{CSV base file name} \hfill \\
-\addcontentsline{toc}{subsection}{CSV base file name}
+\addcontentsline{toc}{subsubsection}{CSV base file name}
     This is a string of text which will be appended with descriptive suffixes
     for each table.  For example the following entry,
     
@@ -80,16 +80,19 @@ The meanings of the fields are as follows:
     \end{itemize}
 
 \item \textit{Java regular expression to match} \hfill \\
-\addcontentsline{toc}{subsection}{Java regular expression to match}
+\addcontentsline{toc}{subsubsection}{Java regular expression to match}
     %TODO
 
 \item \textit{Java regular expression replacement} \hfill \\
-\addcontentsline{toc}{subsection}{Java regular expression replacement}
+\addcontentsline{toc}{subsubsection}{Java regular expression replacement}
     %TODO
 
 \end{itemize}
 
-\section{Example Regular Expressions}
+\subsection{Example Regular Expressions}
+    %TODO
+
+\section{Description of Output Tables}
     %TODO
 
 \end{document}
