@@ -136,8 +136,9 @@ The meanings of the fields are as follows:
 \begin{itemize}
 \item
     If for example, the names of the sequences are patterned as
-    \texttt{[GENE]\_[STRAIN]}, then the default entry will work correctly by
-    grouping all strains for each gene together under the name of the gene.
+    \texttt{STRAIN\_GENE}, then the default entry will work correctly by
+    reducing sequence names to strain names, which will be consistent across
+    alignment files and allow for correlation.
 
     Pattern: \texttt{(.*?)\_.*}
 
@@ -151,11 +152,11 @@ The meanings of the fields are as follows:
     which can be referred to in the replacement as \texttt{\$1}.  It is
     important to note that text in the sequence name which does not match the
     pattern will be left unmodified, so the last part of the pattern
-    \texttt{\_.*}, which matches the \texttt{\_[STRAIN]} portion of the name,
+    \texttt{\_.*}, which matches the \texttt{\_GENE} portion of the name,
     cannot be omitted.
 
 \item
-    Sequence names patterned such as \texttt{[STRAIN]\_[GENE]} can be properly
+    Sequence names patterned such as \texttt{GENE\_STRAIN} can be properly
     grouped by slightly modifying the pattern in the above.
 
     Pattern: \texttt{.*?\_(.*)}
