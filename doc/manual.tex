@@ -117,16 +117,17 @@ The meanings of the fields are as follows:
     \item[]\texttt{partition1\_strain\_vs\_strain\_matrix.csv}
     \end{itemize}
 
-\item \textit{Java regular expression to match} \hfill \\
-\addcontentsline{toc}{subsubsection}{Java regular expression to match}
+\item \textit{Java regular expression pattern match} \hfill \\
+\addcontentsline{toc}{subsubsection}{Java regular expression pattern match}
     The purpose of these last two fields is to establish a transformation of
-    each sequence name so that allele's are grouped together under the name of
-    a gene.  The first field is a pattern to match against each sequence name.
+    sequence names to the strain names, so that strains can be correlated
+    between alignment files.  The first field is a pattern to match against
+    each sequence name.
+
 \item \textit{Java regular expression replacement} \hfill \\
 \addcontentsline{toc}{subsubsection}{Java regular expression replacement}
     This field describes a replacement for the text in the sequence name
     matched by the pattern in the previous field.
-
 
 \end{itemize}
 
@@ -163,8 +164,9 @@ The meanings of the fields are as follows:
 
 \end{itemize}
 
-More information about regular expressions, and regular expressions in
-Java, can be found at the following urls.
+More information about regular expressions, and in particular Java regular
+expressions, can be found at the following urls.
+
 \begin{itemize}
 \item
     \url{https://en.wikipedia.org/wiki/Regular\_expression}
@@ -176,13 +178,47 @@ Java, can be found at the following urls.
 
 \newpage
 \section{Description of Output Tables}
+%\parindent 15pt
+\parskip 10pt
 
 Two tables are created when the plugin is run.  The tables with the suffixes
-\texttt{\_straing\_vs\_strain} and \texttt{\_straing\_vs\_strain\_matrix}
+\texttt{straing\_vs\_strain} and \texttt{straing\_vs\_strain\_matrix}
 describe the number of different alleles (according to the equivalence
-relation) between two 
+relation) between any two strains.
 
-    %TODO: describe how broken equivalence relations are handled.
+The table with the suffix \texttt{gene\_vs\_strain} contains a column for each
+gene (alignment file), and a row for each strain.  The number in a row
+indicates which group that allele matches with respect to other alleles of
+strains in the same column.  The final column on the right indicates a
+partitioning of the rows of the other columns, so each matching row of numbers
+in the other columns will have the same value in the right most column.
+
+\subsection{Partition Relation and Errors}
+The equivalence relation used for partitioning is a comparison of aligned
+nucleotide sequences where `-' is always considered a match with the
+corresponding character in the other sequence.  As a consequence, transitivity
+of the equivalence relation can break under certain conditions.  So, for
+example, the following sequences cannot be partitioned:
+
+\parskip 0cm
+\begin{enumerate}
+\item[(1)] ATC
+\item[(2)] A-C
+\item[(3)] AGC
+\end{enumerate}
+
+\parskip 10pt
+
+Since we have $(\texttt{1}) = (\texttt{2}) = (\texttt{3})$, but $(\texttt{1})
+\ne (\texttt{3})$, therefore no partition can be formed which both groups equal
+sequences and separates unequal sequences.
+
+When such an error occurs, there will be entries of \texttt{-1} in the
+resulting table.  Such values may not be the most effective indicators to use
+for identifying the source sequences of the error, because the situations of
+overlapping groups may be very complex and not comprehensively identified by
+the error markings.  No table results should be accepted if the table contains
+a \texttt{-1}.
 
 \end{document}
 
