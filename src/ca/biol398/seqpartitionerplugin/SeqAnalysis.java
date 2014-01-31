@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Jed Barlow <jbarlow@lavabit.com>
+ * Copyright 2013,2014 Jed Barlow <jbarlow@lavabit.com>
  *
  * This file is part of SeqPartitioner.
  *
@@ -36,58 +36,64 @@ public class SeqAnalysis {
      * but
      *   1 != 3
      * due to the relation being string equivalence up to a special character.
-     * Such errors are immediately halted on, with two conflicting sequences
-     * marked with -1 (note: this may not be the most helpful or informative
+     * On detection of such a situation, two of the conflicting sequences are
+     * marked with -1.  However this marking alone does not completely identify the  (note: this may not be the most helpful or informative
      * selection of two sequences in terms of helping to identify the conflict).
      *
      * TODO: provide more informative feedback on error.
      */
     public static int[] PartitionSequences(String[] ms) {
-        int curClass;
-        int[] ec;
+        int nextClassId;
+        int[] seqToEqClassMap;
+        int unmapped;
 
-        ec = new int[ms.length];
-        for (int i = 0; i < ec.length; i++)
-            ec[i] = 0;
+        unmapped = 0;
+        nextClassId = 1;
+        seqToEqClassMap = new int[ms.length];
 
-        curClass = 1;
         for (int i = 0; i < ms.length; i++) {
-            if(ec[i] == 0) {
-                ec[i] = curClass;
-                curClass++;
+            if (seqToEqClassMap[i] == unmapped) {
+                seqToEqClassMap[i] = nextClassId;
+                nextClassId++;
             }
 
             for (int j = 0; j < ms.length; j++) {
-                if(i == j) continue;
+                if (i == j) continue;
 
-                if(CompareSequences(ms[i], ms[j]) == (ec[i] != ec[j])) {
-                    if(ec[j] == 0)
-                        ec[j] = ec[i];
+                boolean eqvClassMatch = (seqToEqClassMap[i] == seqToEqClassMap[j]);
+                if (eqvClassMatch)
+                	continue;
+
+                boolean seqMatch = CompareSequences(ms[i], ms[j]);
+
+                if (seqMatch != eqvClassMatch) {
+                    if (seqToEqClassMap[j] == unmapped)
+                        seqToEqClassMap[j] = seqToEqClassMap[i];
                     else {
-                        ec[i] = -1;
-                        ec[j] = -1;
+                        seqToEqClassMap[i] = -1;
+                        seqToEqClassMap[j] = -1;
                     }
                 }
             }
         }
 
-        return ec;
+        return seqToEqClassMap;
     }
 
     /*
      * Equivalence up to a special character.
      */
-    public static boolean CompareSequences(String sa1, String sa2) {
+    private static boolean CompareSequences(String sa1, String sa2) {
         int min;
         String maxstr;
 
         min = Math.min(sa1.length(), sa2.length());
 
         /* Test for match up to a special char. */
-        for(int i = 0; i < min; i++) {
-            if(sa1.charAt(i) == sa2.charAt(i)) continue;
-            if(sa1.charAt(i) == EmptyPlaceChar ||
-                    sa2.charAt(i) == EmptyPlaceChar) continue;
+        for (int i = 0; i < min; i++) {
+            if (sa1.charAt(i) == sa2.charAt(i) ||
+                sa1.charAt(i) == EmptyPlaceChar ||
+                sa2.charAt(i) == EmptyPlaceChar) continue;
             return false;
         }
 
@@ -102,7 +108,7 @@ public class SeqAnalysis {
             else
                 maxstr = sa2;
 
-            for(int i = min; i < maxstr.length(); i++) {
+            for (int i = min; i < maxstr.length(); i++) {
                 if (maxstr.charAt(i) != EmptyPlaceChar)
                     return false;
             }
