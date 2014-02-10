@@ -1,5 +1,5 @@
 /*
- * Copyright 2013,2014 Jed Barlow <jbarlow@lavabit.com>
+ * Copyright 2013,2014 E. Jed Barlow <ejbarlow@ualberta.ca>
  *
  * This file is part of SeqPartitioner.
  *
@@ -18,8 +18,6 @@
  *
  */
 package ca.biol398.seqpartitionerplugin;
-
-import com.biomatters.geneious.publicapi.documents.sequence.SequenceAlignmentDocument;
 
 public class SeqAnalysis {
     private static char EmptyPlaceChar = '-';

@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Jed Barlow <jbarlow@lavabit.com>
+ * Copyright 2013,2014 E. Jed Barlow <ejbarlow@ualberta.ca>
  *
  * This file is part of SeqPartitioner.
  *

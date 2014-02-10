@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Jed Barlow <jbarlow@lavabit.com>
+ * Copyright 2013,2014 E. Jed Barlow <ejbarlow@ualberta.ca>
  *
  * This file is part of SeqPartitioner.
  *
@@ -43,15 +43,18 @@ public class SeqPartitionerPlugin extends GeneiousPlugin {
         return "";
     }
     public String getAuthors() {
-        return "Jed Barlow <jbarlow@lavabit.com>";
+        return "E. Jed Barlow <ejbarlow@ualberta.ca>";
+    }
+    public String getEmailAddressForCrashes() {
+        return "E. Jed Barlow <ejbarlow@ualberta.ca>";
     }
     public String getVersion() {
         return "0.4";
     }
     public String getMinimumApiVersion() {
-        return "4.11";  // TODO: figure out what to put here
+        return "4.14";
     }
     public int getMaximumApiVersion() {
-        return 4;  // TODO: figure out what to put here
+        return 4;
     }
 }
