@@ -40,7 +40,8 @@ public class SeqPartitionerPlugin extends GeneiousPlugin {
         return "Creates partition tables of allele sequence multisets";
     }
     public String getHelp() {
-        return "";
+        return "See http://www.ualberta.ca/~ejbarlow/biol398/manual.pdf " +
+               "for installation and usage instructions.";
     }
     public String getAuthors() {
         return "E. Jed Barlow <ejbarlow@ualberta.ca>";
