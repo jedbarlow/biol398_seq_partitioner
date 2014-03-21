@@ -19,7 +19,14 @@
  */
 package ca.biol398.seqpartitionerplugin;
 
+import java.util.regex.Pattern;
+
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
+
+import org.virion.jam.util.SimpleListener;
+
+import sun.misc.Signal;
 
 import jebl.util.ProgressListener;
 
@@ -30,6 +37,8 @@ public class SeqPartitionerOptions extends Options {
     private StringOption base_name;
     private StringOption regexp_match;
     private StringOption regexp_replace;
+    private Option<String, ? extends JComponent> example_regex_output;
+    private String example_name;
 
     public String getOutputDir() {
         return output_dir.getValue();
@@ -44,15 +53,27 @@ public class SeqPartitionerOptions extends Options {
         return regexp_replace.getValue();
     }
 
-    public SeqPartitionerOptions() {
+    public SeqPartitionerOptions(String example_data_object_name) {
+        example_name = example_data_object_name;
         output_dir = this.addFileSelectionOption("output_dir", "CSV output directory", "", new String[] {"csv"}, "Browse");
         output_dir.setSelectionType(JFileChooser.DIRECTORIES_ONLY);
 
         base_name = this.addStringOption("base_name", "CSV base file name", "partition");
 
+        SimpleListener changeListener = new SimpleListener() {
+            @Override
+            public void objectChanged() {
+                updateRegexExample();
+            }
+        };
+
         this.addLabel("Gene name extraction from sequence names");
         regexp_match   = this.addStringOption("regexp_match",   "Java regular expression to match",    "(.*?)_.*");
+        regexp_match.addChangeListener(changeListener);
         regexp_replace = this.addStringOption("regexp_replace", "Java regular expression replacement", "$1");
+        regexp_replace.addChangeListener(changeListener);
+
+
         this.addHelpButton("Help",
                 "The regular expression replacement is used to correlate genes between strains " +
                 "by extracting the gene name from the full sequence name.  For example, " + 
@@ -61,5 +82,24 @@ public class SeqPartitionerOptions extends Options {
                 "For help with Java regular expressions, " +
                 "see http://docs.oracle.com/javase/tutorial/essential/regex/intro.html " +
                 "and http://docs.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html.");
+
+        this.addLabel("Result of applying the regular expression:");
+        this.addLabel(example_name);
+        this.addLabel("Becomes:");
+        this.example_regex_output = this.addLabel("");
+        updateRegexExample();
+    }
+
+    void updateRegexExample()
+    {
+        try {
+            example_regex_output.setValue(
+                    Pattern.compile(regexp_match.getValue())
+                    .matcher(example_name)
+                    .replaceAll(regexp_replace.getValue()));
+        }
+        catch (Exception e) {
+            example_regex_output.setValue("*Error in regular expression*");
+        }
     }
 }

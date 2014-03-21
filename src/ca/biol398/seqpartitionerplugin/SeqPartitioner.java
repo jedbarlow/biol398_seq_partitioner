@@ -61,7 +61,16 @@ public class SeqPartitioner extends DocumentOperation {
     @Override
     public Options getOptions(AnnotatedPluginDocument... documents)
             throws DocumentOperationException {
-        return new SeqPartitionerOptions();
+        String example_name;
+
+        try {
+            SequenceAlignmentDocument d = (SequenceAlignmentDocument) documents[0].getDocument();
+            example_name = d.getSequences().get(0).getName();
+        }
+        catch (Exception e) {
+            example_name = "sample_sequence_name";
+        }
+        return new SeqPartitionerOptions(example_name);
     }
 
     @Override
