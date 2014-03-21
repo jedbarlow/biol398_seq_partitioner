@@ -79,7 +79,6 @@ public class SeqPartitioner extends DocumentOperation {
             ProgressListener progressListener, Options options)
             throws DocumentOperationException {
         SeqPartitionerOptions opts;
-        List<SequenceDocument> sd;
         SequenceAlignmentDocument seqal;
         Pattern pattern;
 
