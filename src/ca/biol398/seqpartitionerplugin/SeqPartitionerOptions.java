@@ -67,7 +67,7 @@ public class SeqPartitionerOptions extends Options {
             }
         };
 
-        this.addLabel("Gene name extraction from sequence names");
+        this.addLabel("Allele name extraction from sequence names");
         regexp_match   = this.addStringOption("regexp_match",   "Java regular expression to match",    "(.*?)_.*");
         regexp_match.addChangeListener(changeListener);
         regexp_replace = this.addStringOption("regexp_replace", "Java regular expression replacement", "$1");
