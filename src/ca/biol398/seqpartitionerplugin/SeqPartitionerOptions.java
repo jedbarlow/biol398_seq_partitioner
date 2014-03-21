@@ -84,7 +84,7 @@ public class SeqPartitionerOptions extends Options {
                 "and http://docs.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html.");
 
         this.addLabel("Result of applying the regular expression:");
-        this.addLabel(example_name);
+        this.addLabel("    " + example_name);
         this.addLabel("Becomes:");
         this.example_regex_output = this.addLabel("");
         updateRegexExample();
@@ -93,13 +93,13 @@ public class SeqPartitionerOptions extends Options {
     void updateRegexExample()
     {
         try {
-            example_regex_output.setValue(
+            example_regex_output.setValue("    " +
                     Pattern.compile(regexp_match.getValue())
                     .matcher(example_name)
                     .replaceAll(regexp_replace.getValue()));
         }
         catch (Exception e) {
-            example_regex_output.setValue("*Error in regular expression*");
+            example_regex_output.setValue("    *Error in regular expression*");
         }
     }
 }
