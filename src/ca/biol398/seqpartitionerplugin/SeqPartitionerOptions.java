@@ -100,4 +100,17 @@ public class SeqPartitionerOptions extends Options {
             example_regex_output.setValue("    *Error in regular expression*");
         }
     }
+
+    @Override
+    public boolean areValuesGoodEnoughToContinue() {
+        try {
+            Pattern.compile(regexp_match.getValue())
+            .matcher("")
+            .replaceAll(regexp_replace.getValue());
+        }
+        catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
 }
