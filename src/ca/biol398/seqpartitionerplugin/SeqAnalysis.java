@@ -35,8 +35,8 @@ public class SeqAnalysis {
      *   1 != 3
      * due to the relation being string equivalence up to a special character.
      * On detection of such a situation, two of the conflicting sequences are
-     * marked with -1.  However this marking alone does not completely identify the  (note: this may not be the most helpful or informative
-     * selection of two sequences in terms of helping to identify the conflict).
+     * marked with -1.  However this marking alone does not completely identify
+     * the all the sequences in violation of transitivity.
      *
      * TODO: provide more informative feedback on error.
      */
