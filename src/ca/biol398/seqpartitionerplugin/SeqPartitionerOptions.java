@@ -73,19 +73,17 @@ public class SeqPartitionerOptions extends Options {
         regexp_replace = this.addStringOption("regexp_replace", "Java regular expression replacement", "$1");
         regexp_replace.addChangeListener(changeListener);
 
-
         this.addHelpButton("Help",
-                "The regular expression replacement is used to correlate genes between strains " +
-                "by extracting the gene name from the full sequence name.  For example, " + 
-                "matching \"(.*?)_.*\" with replacement \"$1\" will transform \"GENE_STRAIN\" " +
-                "to \"GENE\".\n\n" +
-                "For help with Java regular expressions, " +
-                "see http://docs.oracle.com/javase/tutorial/essential/regex/intro.html " +
+                "The regular expression replacement is used to group gene sequences by strain " +
+                "by extracting the strain name from the full sequence name.  For example, " +
+                "matching (.*?)_.* with replacement $1 will transform STRAIN_GENE to STRAIN.\n\n" +
+                "For help with Java regular expressions, see" +
+                "http://docs.oracle.com/javase/tutorial/essential/regex/intro.html " +
                 "and http://docs.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html.");
 
-        this.addLabel("Result of applying the regular expression:");
+        this.addLabel("Example result of applying the regular expression:");
         this.addLabel("    " + example_name);
-        this.addLabel("Becomes:");
+        this.addLabel("transforms to");
         this.example_regex_output = this.addLabel("");
         updateRegexExample();
     }
