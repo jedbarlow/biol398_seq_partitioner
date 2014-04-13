@@ -26,10 +26,6 @@ import javax.swing.JFileChooser;
 
 import org.virion.jam.util.SimpleListener;
 
-import sun.misc.Signal;
-
-import jebl.util.ProgressListener;
-
 import com.biomatters.geneious.publicapi.plugin.*;
 
 public class SeqPartitionerOptions extends Options {
@@ -55,7 +51,8 @@ public class SeqPartitionerOptions extends Options {
 
     public SeqPartitionerOptions(String example_data_object_name) {
         example_name = example_data_object_name;
-        output_dir = this.addFileSelectionOption("output_dir", "CSV output directory", "", new String[] {"csv"}, "Browse");
+        output_dir = this.addFileSelectionOption("output_dir", "CSV output directory",
+                "", new String[] {"csv"}, "Browse");
         output_dir.setSelectionType(JFileChooser.DIRECTORIES_ONLY);
 
         base_name = this.addStringOption("base_name", "CSV base file name", "partition");
@@ -68,9 +65,11 @@ public class SeqPartitionerOptions extends Options {
         };
 
         this.addLabel("Allele name extraction from sequence names");
-        regexp_match   = this.addStringOption("regexp_match",   "Java regular expression to match",    "(.*?)_.*");
+        regexp_match = this.addStringOption("regexp_match",
+                "Java regular expression to match", "(.*?)_.*");
         regexp_match.addChangeListener(changeListener);
-        regexp_replace = this.addStringOption("regexp_replace", "Java regular expression replacement", "$1");
+        regexp_replace = this.addStringOption("regexp_replace",
+                 "Java regular expression replacement", "$1");
         regexp_replace.addChangeListener(changeListener);
 
         this.addHelpButton("Help",
