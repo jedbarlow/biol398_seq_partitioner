@@ -40,8 +40,7 @@ public class SeqPartitioner extends DocumentOperation {
         return new GeneiousActionOptions(
                                          "Partition Allele Multiset...",
                                          "Create a partition table of alleles.")
-            .setMainMenuLocation(GeneiousActionOptions.MainMenu.Tools)
-            .setInMainToolbar(true);
+            .setMainMenuLocation(GeneiousActionOptions.MainMenu.Tools);
     }
 
     @Override
