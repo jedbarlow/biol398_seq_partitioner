@@ -134,7 +134,8 @@ public class SeqPartitioner extends DocumentOperation {
                 e.printStackTrace();
 
             throw new DocumentOperationException(
-                    "Failed to write CSV file: " + file);
+                    "Failed to write CSV file: " + file + "\n\n Reason:\n" +
+                            e.getMessage());
         }
     }
 }
