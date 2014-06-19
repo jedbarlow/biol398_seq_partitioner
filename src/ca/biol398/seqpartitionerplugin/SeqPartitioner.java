@@ -32,14 +32,14 @@ import com.biomatters.geneious.publicapi.documents.sequence.SequenceAlignmentDoc
 import com.biomatters.geneious.publicapi.plugin.*;
 
 public class SeqPartitioner extends DocumentOperation {
-    boolean DEBUG = true;
+    private static boolean DEBUG = true;
 
     @Override
     public GeneiousActionOptions getActionOptions() {
         return new GeneiousActionOptions(
-                                         "Partition Allele Multiset...",
-                                         "Create a partition table of alleles.")
-            .setMainMenuLocation(GeneiousActionOptions.MainMenu.Tools);
+                "Partition Allele Multiset...",
+                "Create a partition table of alleles.")
+        .setMainMenuLocation(GeneiousActionOptions.MainMenu.Tools);
     }
 
     @Override
@@ -50,9 +50,9 @@ public class SeqPartitioner extends DocumentOperation {
     @Override
     public DocumentSelectionSignature[] getSelectionSignatures() {
         return new DocumentSelectionSignature[] {
-            DocumentSelectionSignature.forNucleotideAlignments(
-                                                               1,
-                                                               Integer.MAX_VALUE)
+                DocumentSelectionSignature.forNucleotideAlignments(
+                        1,
+                        Integer.MAX_VALUE)
         };
     }
 
@@ -77,8 +77,9 @@ public class SeqPartitioner extends DocumentOperation {
             ProgressListener progressListener, Options options)
             throws DocumentOperationException {
         SeqPartitionerOptions opts;
-        SequenceAlignmentDocument seqal;
         Pattern pattern;
+        String[][] table;
+        String baseFileName;
 
         opts = (SeqPartitionerOptions) options;
         pattern = Pattern.compile(opts.getRegexpMatch());
@@ -87,64 +88,53 @@ public class SeqPartitioner extends DocumentOperation {
                 ((SequenceAlignmentDocument)documents[0].getDocument()).getSequences().size(),
                 documents.length);
 
-        for (int d = 0; d < documents.length; d++) {
-            seqal = (SequenceAlignmentDocument) documents[d].getDocument();
+        for (int d = 0; d < documents.length; d++)
+            tc.addDocument(
+                    (SequenceAlignmentDocument)documents[d].getDocument(),
+                    pattern,
+                    opts.getRegexpReplacement());
 
-            tc.addDocument(seqal, pattern, opts.getRegexpReplacement());
-        }
+        baseFileName = opts.getOutputDir() + File.separator + opts.getBaseName();
 
-        try {
-            String[][] table;
-            FileWriter f = new FileWriter(
-                    opts.getOutputDir() + File.separator + opts.getBaseName() + "_gene_vs_strain.csv");
+        this.writeCsvGrid(
+                tc.RenderGeneVStrainTable(),
+                baseFileName + "_gene_vs_strain.csv");
 
-            table = tc.RenderGeneVStrainTable();
+        table = tc.RenderStrainVStrainTable();
 
-            for (int j = 0; j < table[0].length; j++) {
-                for (int i = 0; i < table.length; i++) {
-                    if (i != 0)
-                        f.write(",");
-                    if (table[i][j] != null) f.write(table[i][j]);
-                }
-                f.write("\n");
-            }
-            f.close();
+        this.writeCsvGrid(
+                table,
+                baseFileName + "_strain_vs_strain_matrix.csv");
 
-            f = new FileWriter(
-                    opts.getOutputDir() + File.separator + opts.getBaseName() + "_strain_vs_strain_matrix.csv");
-
-            table = tc.RenderStrainVStrainTable();
-
-            for (int j = 0; j < table[0].length; j++) {
-                for (int i = 0; i < table.length; i++) {
-                    if (i != 0)
-                        f.write(",");
-                    if (table[i][j] != null) f.write(table[i][j]);
-                }
-                f.write("\n");
-            }
-
-            f.close();
-
-            f = new FileWriter(
-                    opts.getOutputDir() + File.separator + opts.getBaseName() + "_strain_vs_strain.csv");
-
-            table = TableConstructor.StrainVStrainToSideBySide(table);
-
-            for (int j = 0; j < table[0].length; j++) {
-                for (int i = 0; i < table.length; i++) {
-                    if (i != 0)
-                        f.write(",");
-                    if (table[i][j] != null) f.write(table[i][j]);
-                }
-                f.write("\n");
-            }
-            f.close();
-        } catch (IOException e) {
-            // TODO: Show popup dialog box or something.
-            e.printStackTrace();
-        }
+        this.writeCsvGrid(
+                TableConstructor.StrainVStrainToSideBySide(table),
+                baseFileName + "_strain_vs_strain.csv");
 
         return new ArrayList<AnnotatedPluginDocument>();
+    }
+
+    protected void writeCsvGrid(String[][] grid, String file)
+            throws DocumentOperationException {
+        try {
+            FileWriter f = new FileWriter(file);
+
+            for (int j = 0; j < grid[0].length; j++) {
+                for (int i = 0; i < grid.length; i++) {
+                    if (i != 0)
+                        f.write(",");
+                    if (grid[i][j] != null) f.write(grid[i][j]);
+                }
+                f.write("\n");
+            }
+
+            f.close();
+        }
+        catch (IOException e) {
+            if (DEBUG)
+                e.printStackTrace();
+
+            throw new DocumentOperationException(
+                    "Failed to write CSV file: " + file);
+        }
     }
 }
