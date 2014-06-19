@@ -29,7 +29,6 @@ import java.util.regex.Pattern;
 import jebl.util.ProgressListener;
 import com.biomatters.geneious.publicapi.documents.AnnotatedPluginDocument;
 import com.biomatters.geneious.publicapi.documents.sequence.SequenceAlignmentDocument;
-import com.biomatters.geneious.publicapi.documents.sequence.SequenceDocument;
 import com.biomatters.geneious.publicapi.plugin.*;
 
 public class SeqPartitioner extends DocumentOperation {
