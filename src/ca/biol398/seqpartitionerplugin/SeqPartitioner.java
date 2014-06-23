@@ -27,6 +27,8 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import jebl.util.ProgressListener;
+
+import com.biomatters.geneious.publicapi.components.Dialogs;
 import com.biomatters.geneious.publicapi.documents.AnnotatedPluginDocument;
 import com.biomatters.geneious.publicapi.documents.sequence.SequenceAlignmentDocument;
 import com.biomatters.geneious.publicapi.plugin.*;
@@ -80,6 +82,7 @@ public class SeqPartitioner extends DocumentOperation {
         Pattern pattern;
         String[][] table;
         String baseFileName;
+        File resultsFolder;
 
         opts = (SeqPartitionerOptions) options;
         pattern = Pattern.compile(opts.getRegexpMatch());
@@ -94,7 +97,9 @@ public class SeqPartitioner extends DocumentOperation {
                     pattern,
                     opts.getRegexpReplacement());
 
-        baseFileName = opts.getOutputDir() + File.separator + opts.getBaseName();
+        resultsFolder = new File(opts.getOutputDir());
+        ensureDirExists(resultsFolder);
+        baseFileName = resultsFolder.getPath() + File.separator + opts.getBaseName();
 
         this.writeCsvGrid(
                 tc.RenderGeneVStrainTable(),
@@ -110,9 +115,19 @@ public class SeqPartitioner extends DocumentOperation {
                 TableConstructor.StrainVStrainToSideBySide(table),
                 baseFileName + "_strain_vs_strain.csv");
 
+        Dialogs.showMessageDialog("Results saved in " + resultsFolder.getAbsolutePath());
+
         return new ArrayList<AnnotatedPluginDocument>();
     }
 
+    protected void ensureDirExists(File dir)
+            throws DocumentOperationException {
+        dir.mkdirs();
+        if (!dir.exists()) {
+            throw new DocumentOperationException(
+                    "Failed to create the output directory: " + dir);
+        }
+    }
     protected void writeCsvGrid(String[][] grid, String file)
             throws DocumentOperationException {
         try {

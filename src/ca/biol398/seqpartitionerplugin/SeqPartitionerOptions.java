@@ -19,6 +19,7 @@
  */
 package ca.biol398.seqpartitionerplugin;
 
+import java.io.File;
 import java.util.regex.Pattern;
 
 import javax.swing.JComponent;
@@ -51,8 +52,12 @@ public class SeqPartitionerOptions extends Options {
 
     public SeqPartitionerOptions(String example_data_object_name) {
         example_name = example_data_object_name;
+
+        String default_output_dir = System.getProperty("user.home") +
+                File.separator + "Desktop" + File.separator + "csv";
+
         output_dir = this.addFileSelectionOption("output_dir", "CSV output directory",
-                "", new String[] {"csv"}, "Browse");
+                default_output_dir, new String[] {}, "Browse");
         output_dir.setSelectionType(JFileChooser.DIRECTORIES_ONLY);
 
         base_name = this.addStringOption("base_name", "CSV base file name", "partition");
