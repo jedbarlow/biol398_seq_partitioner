@@ -50,7 +50,7 @@ public class SeqPartitionerPlugin extends GeneiousPlugin {
         return "E. Jed Barlow <ejbarlow@ualberta.ca>";
     }
     public String getVersion() {
-        return "0.4";
+        return "0.5";
     }
     public String getMinimumApiVersion() {
         return "4.14";
