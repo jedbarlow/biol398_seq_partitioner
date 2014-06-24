@@ -53,7 +53,7 @@ public class SeqPartitionerPlugin extends GeneiousPlugin {
         return "0.5";
     }
     public String getMinimumApiVersion() {
-        return "4.14";
+        return "4.610";
     }
     public int getMaximumApiVersion() {
         return 4;
